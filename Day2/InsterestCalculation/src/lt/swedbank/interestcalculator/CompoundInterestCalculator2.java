@@ -1,27 +1,35 @@
-package lt.swedbank.itacademy.interestcalculator;
+package lt.swedbank.interestcalculator;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class CompundInterestCalculator {
+public class CompoundInterestCalculator2 {
 
     private static final int ALL_PERCENT = 100;
+    private static final int STARTING_INTEREST_ARRAY_LENGTH = 20;
 
     private static Scanner scanner;
     private static double loanAmount;
     private static double interestRate;
-    private static int loanPeriod;
     private static int compoundFrequency;
+    private static int loanPeriod;
     private static double[] interestArray;
+
+    private static double[] interestFrequencyArray;
+    private static int interestFrequencyAmount = 0;
 
     public static void main(String[] args) {
         scanner = new Scanner(System.in);
+        interestFrequencyArray = new double[STARTING_INTEREST_ARRAY_LENGTH];
 
         System.out.println("Amount: ");
         loanAmount = scanner.nextDouble();
 
-        System.out.println("Interest rate (%): ");
-        interestRate = scanner.nextDouble() / ALL_PERCENT;
+        do {
+            System.out.println("Interest rate (%): ");
+            interestFrequencyArray[interestFrequencyAmount] = scanner.nextDouble() / ALL_PERCENT;
+            interestFrequencyAmount++;
+        } while (interestFrequencyArray[interestFrequencyAmount - 1] != 0);
 
         System.out.println("Period length (years): ");
         loanPeriod = scanner.nextInt();
@@ -29,22 +37,11 @@ public class CompundInterestCalculator {
         System.out.println("Compound frequency: ");
         compoundFrequency = findCompoundFrequency(scanner.next());
 
-        interestArray = new double[compoundFrequency * loanPeriod];
-        double interest = 0;
+        for (int i = 0; i < loanPeriod; i++) {
+            for (int j = 0; j < interestFrequencyAmount; j++){
 
-        for (int i = 0; i < loanPeriod * compoundFrequency; i++) {
-            double temp = loanAmount + interest;
-
-            interestArray[i] = calculateInterest(temp, interestRate, 1, compoundFrequency);
-            interest += interestArray[i];
-
-            if (i % compoundFrequency == 0) {
-                System.out.printf("Interest amount after year %d: %.2f \n", i / compoundFrequency + 1, calculateInterest(loanAmount, interestRate, i / compoundFrequency + 1, compoundFrequency));
             }
         }
-
-        System.out.printf("\nIntermediate interest amounts: %s\n", Arrays.toString(interestArray));
-        System.out.printf("Total amount: %.2f", loanAmount + calculateInterest(loanAmount, interestRate, loanPeriod, compoundFrequency));
     }
 
     private static double calculateInterest(double loanAmount, double interestRate, int loanPeriod, int compoundFrequency) {

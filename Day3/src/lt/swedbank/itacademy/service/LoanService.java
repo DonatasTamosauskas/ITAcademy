@@ -34,7 +34,7 @@ public class LoanService implements LoanServiceInterface {
         for (Loan currentLoan : loanArray) {
             averageLoanCost = averageLoanCost.add(LoanUtil.calculateTotalLoanCost(currentLoan));
         }
-        return averageLoanCost.divide(new BigDecimal(loanArray.length));
+        return averageLoanCost.divide(new BigDecimal(loanArray.length), ROUNDING_PRECISION, BigDecimal.ROUND_HALF_EVEN);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class LoanService implements LoanServiceInterface {
                 numberOfLoans++;
             }
         }
-        return averageLoanCost.divide(new BigDecimal(numberOfLoans), 2, BigDecimal.ROUND_UP);
+        return averageLoanCost.divide(new BigDecimal(numberOfLoans), ROUNDING_PRECISION, BigDecimal.ROUND_UP);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class LoanService implements LoanServiceInterface {
                 numberOfLoans++;
             }
         }
-        return averageLoanCost.divide(new BigDecimal(numberOfLoans));
+        return averageLoanCost.divide(new BigDecimal(numberOfLoans), ROUNDING_PRECISION, BigDecimal.ROUND_HALF_EVEN);
     }
 
     @Override
@@ -148,10 +148,7 @@ public class LoanService implements LoanServiceInterface {
 
     public Set<Loan> prioritizeLoans() {
         Set<Loan> prioritizedLoans = new TreeSet<>(new LoanComparator());
-
-        for (Loan currentLoan : loanArray) {
-            prioritizedLoans.add(currentLoan);
-        }
+        prioritizedLoans.addAll(Arrays.asList(loanArray));
 
         return prioritizedLoans;
     }
@@ -187,7 +184,6 @@ public class LoanService implements LoanServiceInterface {
         Collection<VehicleLoan> vehicleLoans = calculateVehicleLoans();
         Collection<VehicleLoan> higherThanAverageDepreciation = new ArrayList<>();
         BigDecimal averageDepreciation = calculateAverageDepreciation();
-        System.out.println("Average dep: " + averageDepreciation.toString());
 
         for (VehicleLoan currentLoan : vehicleLoans) {
             if (LoanUtil.calculateVehicleDeprecation(currentLoan).compareTo(averageDepreciation) > 0) {

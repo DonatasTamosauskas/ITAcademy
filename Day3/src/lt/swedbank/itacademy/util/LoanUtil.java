@@ -8,11 +8,16 @@ import java.util.Date;
 
 public class LoanUtil {
     private static final int DAYS_IN_YEAR = 365;
+    private static final int ROUNDING_PRECISION = 2;
+
 
     public static BigDecimal calculateVehicleDeprecation(VehicleLoan vehicleLoan) {
         long yearsInUse = calculateYearsInUse(vehicleLoan.getManufacturedDate());
         BigDecimal maximumAge = new BigDecimal(vehicleLoan.getMaximumAge());
-        return vehicleLoan.getPrice().multiply(new BigDecimal(yearsInUse)).divide(maximumAge, 2, BigDecimal.ROUND_HALF_EVEN);
+        BigDecimal deprecation = vehicleLoan.getPrice().multiply(new BigDecimal(yearsInUse)).divide(maximumAge, ROUNDING_PRECISION, BigDecimal.ROUND_HALF_EVEN);
+
+        if (deprecation.compareTo(vehicleLoan.getPrice()) > 0 ) return vehicleLoan.getPrice();
+        return deprecation;
     }
 
     private static long calculateYearsInUse(Date manufacturedDate) {
@@ -21,7 +26,7 @@ public class LoanUtil {
     }
 
     public static BigDecimal calculateTotalLoanCost(Loan loan) {
-        BigDecimal interest = loan.getPrice().multiply(loan.getInterestRate().divide(new BigDecimal(100), 2, BigDecimal.ROUND_UP));
+        BigDecimal interest = loan.getPrice().multiply(loan.getInterestRate().divide(new BigDecimal(100), ROUNDING_PRECISION, BigDecimal.ROUND_UP));
         return loan.getPrice().add(interest);
     }
 

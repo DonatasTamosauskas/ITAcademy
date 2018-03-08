@@ -9,6 +9,7 @@ import java.util.Set;
 
 public interface LoanServiceInterface {
     int DAYS_IN_YEAR = 365;
+    int ROUNDING_PRECISION = 2;
 
     Loan[] calculateHighRiskLoans();
 
@@ -32,12 +33,12 @@ public interface LoanServiceInterface {
 
     Loan[] calculateExpiredHighRiskVehicleLoansOfHighestDuration();
 
-    public Set<Loan> prioritizeLoans ();
+    Set<Loan> prioritizeLoans ();
 
-    public Collection<HarvesterLoan> calculateLowRiskHarvesterLoans();
+    Collection<HarvesterLoan> calculateLowRiskHarvesterLoans();
 
-    public Collection<LandLoan> calculateExpiredLandLoansInReservation();
+    Collection<LandLoan> calculateExpiredLandLoansInReservation();
 
-    public Collection<VehicleLoan> calculateLoansOfHigherThanAverageDepreciation();
+    Collection<VehicleLoan> calculateLoansOfHigherThanAverageDepreciation();
 
 }

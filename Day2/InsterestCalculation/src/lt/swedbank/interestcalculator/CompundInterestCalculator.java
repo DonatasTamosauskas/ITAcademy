@@ -3,10 +3,13 @@ package lt.swedbank.interestcalculator;
 import java.util.Arrays;
 import java.util.Scanner;
 
+//"Compund" ?
 public class CompundInterestCalculator {
 
     private static final int ALL_PERCENT = 100;
 
+    //You don't need these to be declared as class fields.
+    //General rule for variables: if they are used outside a class or in more than one method - field, only in one method - local variable.
     private static Scanner scanner;
     private static double loanAmount;
     private static double interestRate;
@@ -33,6 +36,7 @@ public class CompundInterestCalculator {
         double interest = 0;
 
         for (int i = 0; i < loanPeriod * compoundFrequency; i++) {
+            //You are using this variable only once. You can pass "loanAmount + interest" directly to "calculateInterest(...)".
             double temp = loanAmount + interest;
 
             interestArray[i] = calculateInterest(temp, interestRate, 1, compoundFrequency);
@@ -48,10 +52,12 @@ public class CompundInterestCalculator {
     }
 
     private static double calculateInterest(double loanAmount, double interestRate, int loanPeriod, int compoundFrequency) {
+        //"power" is only used once. You can calculate it in "return" statement.
         double power = Math.pow(1 + (interestRate / compoundFrequency), loanPeriod * compoundFrequency);
         return loanAmount * power - loanAmount;
     }
 
+    //Perfect!
     private static int findCompoundFrequency(String timePeriod) {
         switch (timePeriod) {
             case "D":

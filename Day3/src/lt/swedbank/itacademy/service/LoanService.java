@@ -16,6 +16,7 @@ public class LoanService implements LoanServiceInterface {
 
 
     @Override
+    //Task 1: rewrite "Loan[]" -> "Collection<Loan>"/"List<Loan>"
     public Loan[] calculateHighRiskLoans() {
         ArrayList<Loan> highRiskLoans = new ArrayList<>(Arrays.asList(loanArray));
 
@@ -93,6 +94,7 @@ public class LoanService implements LoanServiceInterface {
 
     @Override
     public Map<LoanRiskType, Collection<Loan>> groupLoansByRiskType() {
+        //You should choose a better name than "loans".
         Map<LoanRiskType, Collection<Loan>> loans = new HashMap<>();
 
         for (Loan currentLoan : loanArray) {
@@ -109,6 +111,7 @@ public class LoanService implements LoanServiceInterface {
     }
 
     @Override
+    //Task 1: rewrite "Loan[]" -> "Collection<Loan>"/"List<Loan>"
     public Loan[] calculateNormalRiskVehicleLoans() {
         Collection<VehicleLoan> highRiskVehicles = calculateLoanedVehiclesByRisk(LoanRiskType.HIGH_RISK);
         return highRiskVehicles.toArray(new VehicleLoan[highRiskVehicles.size()]);
@@ -128,12 +131,15 @@ public class LoanService implements LoanServiceInterface {
     }
 
     @Override
+    //Task 1: rewrite "Loan[]" -> "Collection<Loan>"/"List<Loan>"
     public Loan[] calculatePersonalRealEstateLoans() {
+        //Don't use concrete types in collection declarations!
         ArrayList<RealEstateLoan> personalLoans = calculateRealEstateLoansByPurpose(RealEstatePurpose.PERSONAL);
         return personalLoans.toArray(new Loan[personalLoans.size()]);
     }
 
     @Override
+    //Task 1: rewrite "Loan[]" -> "Collection<Loan>"/"List<Loan>"
     public Loan[] calculateExpiredHighRiskVehicleLoansOfHighestDuration() {
         Collection<VehicleLoan> highRiskVehicles = calculateLoanedVehiclesByRisk(LoanRiskType.HIGH_RISK);
         Collection<VehicleLoan> expiredVehicles = new ArrayList<>();
